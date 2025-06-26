@@ -6,9 +6,9 @@ from designsafe.apps.notifications.models import SiteMessage
 
 class SiteMessageAdminForm(forms.ModelForm):
     """Custom admin form for SiteMessage with WYSIWYG editor."""
-    
+
     message = HTMLFormField()
-    
+
     class Meta:
         model = SiteMessage
         fields = '__all__'
