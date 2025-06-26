@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django import forms
-from django.utils.html import format_html
 from djangocms_text_ckeditor.fields import HTMLFormField
 from designsafe.apps.notifications.models import SiteMessage
 
@@ -18,13 +17,8 @@ class SiteMessageAdminForm(forms.ModelForm):
 class SiteMessageAdmin(admin.ModelAdmin):
     """Admin interface for SiteMessage with WYSIWYG editor."""
     form = SiteMessageAdminForm
-    list_display = ('formatted_message', 'display')
+    list_display = ('message', 'display')
     list_filter = ('display',)
-    
-    def formatted_message(self, obj):
-        """Display formatted HTML message in admin list view."""
-        return format_html(obj.message)
-    formatted_message.short_description = 'Message'
 
 
 # Register your models here.

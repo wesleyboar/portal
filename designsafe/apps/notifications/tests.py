@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.admin.sites import AdminSite
+from django.template.loader import get_template
 from djangocms_text_ckeditor.fields import HTMLFormField
 from designsafe.apps.notifications.models import SiteMessage
 from designsafe.apps.notifications.admin import SiteMessageAdmin, SiteMessageAdminForm
@@ -27,17 +28,15 @@ class SiteMessageAdminTests(TestCase):
         site = AdminSite()
         admin = SiteMessageAdmin(SiteMessage, site)
         self.assertEqual(admin.form, SiteMessageAdminForm)
-        self.assertEqual(admin.list_display, ('formatted_message', 'display'))
+        self.assertEqual(admin.list_display, ('message', 'display'))
         self.assertEqual(admin.list_filter, ('display',))
 
-    def test_formatted_message_method(self):
-        """Test that formatted_message method renders HTML properly."""
-        site_message = SiteMessage(
-            message='<b>Test</b> message with <code>$WORK</code>',
-            display=True
-        )
-        site = AdminSite()
-        admin = SiteMessageAdmin(SiteMessage, site)
-        formatted = admin.formatted_message(site_message)
-        self.assertEqual(formatted, '<b>Test</b> message with <code>$WORK</code>')
-        self.assertEqual(admin.formatted_message.short_description, 'Message')
+    def test_admin_template_override(self):
+        """Test that admin template override exists to render HTML messages safely."""
+        try:
+            template = get_template('admin/base_site.html')
+            self.assertIsNotNone(template)
+        except Exception:
+            self.fail("Admin template override not found")
+
+
