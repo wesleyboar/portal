@@ -27,5 +27,17 @@ class SiteMessageAdminTests(TestCase):
         site = AdminSite()
         admin = SiteMessageAdmin(SiteMessage, site)
         self.assertEqual(admin.form, SiteMessageAdminForm)
-        self.assertEqual(admin.list_display, ('message', 'display'))
+        self.assertEqual(admin.list_display, ('formatted_message', 'display'))
         self.assertEqual(admin.list_filter, ('display',))
+
+    def test_formatted_message_method(self):
+        """Test that formatted_message method renders HTML properly."""
+        site_message = SiteMessage(
+            message='<b>Test</b> message with <code>$WORK</code>',
+            display=True
+        )
+        site = AdminSite()
+        admin = SiteMessageAdmin(SiteMessage, site)
+        formatted = admin.formatted_message(site_message)
+        self.assertEqual(formatted, '<b>Test</b> message with <code>$WORK</code>')
+        self.assertEqual(admin.formatted_message.short_description, 'Message')
