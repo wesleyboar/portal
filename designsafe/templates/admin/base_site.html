@@ -1,3 +1,4 @@
+{# https://github.com/django-cms/djangocms-admin-style/blob/3.3.1/djangocms_admin_style/templates/admin/base_site.html #}
 {% extends "admin/base.html" %}
 {% load i18n static admin_style_tags %}
 
@@ -24,6 +25,7 @@
 
 {% block nav-global %}{% endblock %}
 
+{# TACC: To NOT show escaped HTML #}
 {% block messages %}
     {% if messages %}
         <ul class="messagelist">
@@ -33,3 +35,4 @@
         </ul>
     {% endif %}
 {% endblock %}
+{# /TACC #}
